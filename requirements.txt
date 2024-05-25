@@ -1,0 +1,5 @@
+discord==2.3.2
+ollama==0.2.0
+customtkinter==5.2.2
+pillow==10.2.0
+
