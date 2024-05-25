@@ -5,11 +5,11 @@
 **Martin-Weasel**  ‍  (Author)
 
 This user-friendly Python project seamlessly integrates the power of `ollama`'s creative language models with your Discord server, providing an interactive and informative chatbot experience for your community.
-
+https://github.com/Martin-Weasel/Ollama-Discord-Chatbot/blob/main/screenshot1.webp
 ## Screenshots
-!["Screenshot1"]("screenshot1.webp")
-!["Screenshot2"]("screenshot2.webp")
-!["Screenshot3"]("screenshot3.webp")
+!["Screenshot1"](screenshot1.webp)
+!["Screenshot2"](screenshot2.webp)
+!["Screenshot3"](screenshot3.webp)
 
 ## Features  ⚙️
 
@@ -66,7 +66,7 @@ A big thank you to the `ollama` developers for their innovative language modelin
 
 ## Contact
 
-Feel free to reach out with any questions or suggestions through martin.weasel@email.com.
+Feel free to reach out with any questions or suggestions through martin.weasel895@email.com.
 
 **Additional Tips:**
 
