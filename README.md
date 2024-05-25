@@ -58,7 +58,7 @@ We welcome contributions from the community! Feel free to fork the repository, p
 
 ## License
 
-This project is licensed under the (License Name) license. You can find the full license terms in the `LICENSE` file.  ([LICENSE])
+This project is licensed under the (License Name) license. You can find the full license terms in the `LICENSE` file.  ["MIT"]("https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt")
 
 ## Acknowledgments
 
