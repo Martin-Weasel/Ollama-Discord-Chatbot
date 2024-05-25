@@ -36,9 +36,12 @@ https://github.com/Martin-Weasel/Ollama-Discord-Chatbot/blob/main/screenshot1.we
 4. Replace the placeholder text in `bot_token_entry` and `model_name_entry` within the GUI with your actual Discord bot token and desired `ollama` model name (e.g., `llama2`).
 5. Run the script using `python main.py` (or adjust the command if your main script is named differently).
 
-<code>
+```
 git clone https://github.com/Martin-Weasel/Ollama-Discord-Chatbot.git
-</code>
+cd Ollama-Discord-Chatbot
+pip install -r requirements.txt
+python3 bot.py
+```
 
 ## Usage
 
