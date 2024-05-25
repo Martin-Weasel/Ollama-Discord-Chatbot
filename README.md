@@ -58,7 +58,7 @@ We welcome contributions from the community! Feel free to fork the repository, p
 
 ## License
 
-This project is licensed under the (License Name) license. You can find the full license terms in the `LICENSE` file.  (LICENSE)
+This project is licensed under the (License Name) license. You can find the full license terms in the `LICENSE` file.  ([LICENSE])
 
 ## Acknowledgments
 
