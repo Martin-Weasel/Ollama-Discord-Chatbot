@@ -50,6 +50,7 @@ class Discord_bot:
                 prompt = "\n".join(context_window[user_id])         # sets the list inside the string
 
                 response = ollama.generate(model=self.MODEL_NAME, prompt=prompt)
+                context_window[user_id].append(f"{bot.user.name} : {response['response']}")
 
                 await message.channel.send(response["response"])
 
