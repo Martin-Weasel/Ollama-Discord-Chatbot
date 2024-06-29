@@ -8,6 +8,11 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image
 
+context_window = {} # creating a dictionary for context window
+# This dictionary will follow this format
+# {"user_id" : [list of messages]}
+# user_id is a compound id consisting of current guild id and current author id
+
 class Discord_bot:
     def __init__(self, bot_token, model_name):
         self.DISCORD_BOT_TOKEN = bot_token
@@ -33,9 +38,19 @@ class Discord_bot:
                 return
 
             if bot.user.mentioned_in(message):
-                command = message.content.replace(f'<@!{bot.user.id}>', '').strip()
+                
+                user_id = f"{message.guild.id}-{message.author.id}" # makes user_id
+                if user_id not in context_window:                   # checks if user_id is in context window
+                    context_window[user_id] = []                    # adds it to nested list
 
-                response = ollama.generate(model=self.MODEL_NAME, prompt=f"{username}: {user_message}")
+                command = message.content.replace(f'<@!{bot.user.id}>', '').strip()
+                
+                context_window[user_id].append(f"{username} : {user_message}") # appends current conversation to context window under user_id
+                
+                prompt = "\n".join(context_window[user_id])         # sets the list inside the string
+
+                response = ollama.generate(model=self.MODEL_NAME, prompt=prompt)
+                context_window[user_id].append(f"{bot.user.name} : {response['response']}")
 
                 await message.channel.send(response["response"])
 
