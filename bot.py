@@ -8,6 +8,7 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image
 
+SYSTEM_PROMPT = "User's nickname is \"%n\" and it is case-sensitive!"
 context_window = {} # creating a dictionary for context window
 # This dictionary will follow this format
 # {"user_id" : [list of messages]}
@@ -21,7 +22,7 @@ class Discord_bot:
         logging.basicConfig(filename='log.txt', level=logging.INFO, format='[%(asctime)s] [%(levelname)s] %(message)s')
 
         intents = discord.Intents.default()
-        intents.messages = True 
+        intents.messages = True
 
         bot = commands.Bot(command_prefix='@Chat ', intents=intents)
 
@@ -31,29 +32,27 @@ class Discord_bot:
 
         @bot.event
         async def on_message(message):
-            username = str(message.author).split('#')[0]
-            user_message = str(message.content)
+            username = message.author.display_name                                                  # get the username of the author
 
-            if message.author == bot.user:
-                return
+            if message.author == bot.user: return
 
             if bot.user.mentioned_in(message):
+                user_id = f"{message.guild.id}-{message.channel.id}-{message.author.id}"            # form the user_id
+                if user_id not in context_window:                                                   # check if user_id is in context window
+                    context_window[user_id] = []                                                    # add user into context window
+                    system_prompt = SYSTEM_PROMPT.replace('%n', username)                           # form the system prompt
+                    context_window[user_id].append({'role': 'system', 'content': system_prompt})    # append the system prompt to the context window
+
+                plain_message = message.content.replace(f'<@{bot.user.id}>', '').strip()            # remove the mention and strip the message
                 
-                user_id = f"{message.guild.id}-{message.author.id}" # makes user_id
-                if user_id not in context_window:                   # checks if user_id is in context window
-                    context_window[user_id] = []                    # adds it to nested list
+                context_window[user_id].append({'role': 'user', 'content': plain_message})          # append user's message to the context window
 
-                command = message.content.replace(f'<@!{bot.user.id}>', '').strip()
+                response = ollama.chat(model=self.MODEL_NAME, messages=context_window[user_id])     # generate response based on the context
+                context_window[user_id].append(response['message'])                                 # append assistant's message to the context window
                 
-                context_window[user_id].append(f"{username} : {user_message}") # appends current conversation to context window under user_id
+                response_message = f"<@{message.author.id}> {response['message']['content']}"       # form the response message and tag the user
+                await message.channel.send(response_message)                                        # send the message content to the channel
                 
-                prompt = "\n".join(context_window[user_id])         # sets the list inside the string
-
-                response = ollama.generate(model=self.MODEL_NAME, prompt=prompt)
-                context_window[user_id].append(f"{bot.user.name} : {response['response']}")
-
-                await message.channel.send(response["response"])
-
             await bot.process_commands(message)
 
         bot.run(self.DISCORD_BOT_TOKEN)
@@ -93,7 +92,7 @@ class GUI:
         if self.DISCORD_BOT_TOKEN == "":
             messagebox.showerror("Error", "Please enter your BOT Token!")
         elif self.MODEL_NAME == "":
-            messagebox.showerror("Error", "Please enter the name of the Model e.g llama2 !")
+            messagebox.showerror("Error", "Please enter the name of the Model e.g llama3.1:8b !")
         else:
             Discord_bot(self.DISCORD_BOT_TOKEN, self.MODEL_NAME)
         
